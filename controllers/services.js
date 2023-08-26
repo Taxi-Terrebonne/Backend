@@ -46,9 +46,9 @@ async function deleteservices(req, res) {
     const { id } = req.params;
     const deletedservices = await Services.findByIdAndDelete(id);
     if (!deletedservices) {
-      return res.status(404).json({ message: 'Vehicle type not found' });
+      return res.status(404).json({ message: 'Services not found' });
     }
-    res.status(200).json({ message: 'Vehicle type deleted successfully' });
+    res.status(200).json({ message: 'Services deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }

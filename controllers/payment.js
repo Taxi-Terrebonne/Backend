@@ -20,14 +20,35 @@ async function getpayment(req, res) {
   }
 }
 
+async function updatepayments(req, res) {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const updatedPayments = await Payment.findByIdAndUpdate(
+      id,
+      { name },
+      { new: true }
+    );
+
+    if (!updatedPayments) {
+      return res.status(404).json({ message: 'Payment Methode not found' });
+    }
+
+    res.status(200).json(updatedPayments);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 async function deletepayment(req, res) {
   try {
     const { id } = req.params;
     const deletedpayment = await Payment.findByIdAndDelete(id);
     if (!deletedpayment) {
-      return res.status(404).json({ message: 'Vehicle type not found' });
+      return res.status(404).json({ message: 'Payment Methode not found' });
     }
-    res.status(200).json({ message: 'Vehicle type deleted successfully' });
+    res.status(200).json({ message: 'Payment Methode deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -35,5 +56,6 @@ async function deletepayment(req, res) {
 module.exports = {
   createpayment,
   getpayment,
-  deletepayment
+  deletepayment,
+  updatepayments
 };
