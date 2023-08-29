@@ -19,7 +19,9 @@ exports.createReservation = async (req, res) => {
       !newReservationData.email ||
       !newReservationData.dateTime ||
       !newReservationData.departureAddress ||
-      !newReservationData.arrivalAddress
+      !newReservationData.arrivalAddress ||
+      !newReservationData.phoneNumber ||
+      !newReservationData.vehicleType
     ) {
       return res.status(400).json({ error: 'Please fill all the required fields' });
     }
@@ -36,9 +38,17 @@ exports.createReservation = async (req, res) => {
         <p>Dear ${newReservation.name},</p>
     
         <p>We're delighted to confirm your reservation with <strong>Taxi Terrebonne</strong>. Here are the details:</p>
-    
-        <p><strong>Date and Time:</strong> ${newReservation.dateTime}.</p>
-        <p><strong>Departure Address:</strong> ${newReservation.departureAddress}.</p>
+        <p><strong>Phone Number:</strong> ${newReservation.phoneNumber}.</p>
+
+        <p><strong>Date and Time:</strong> ${new Date(newReservation.dateTime).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      })}.</p>
+       <p><strong>Departure Address:</strong> ${newReservation.departureAddress}.</p>
         <p><strong>Arrival Address:</strong> ${newReservation.arrivalAddress}.</p>
         <p><strong>Vehicle Type:</strong> ${newReservation.vehicleType}.</p>
     

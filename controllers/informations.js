@@ -1,13 +1,14 @@
 const TextItem = require('../models/informations');
 
 exports.createTextItem = async (req, res) => {
-  const { title, desc, note } = req.body;
+  const { title, desc, note, footer } = req.body;
 
   try {
     const newTextItem = new TextItem({
       title,
       desc,
       note,
+      footer
     });
     await newTextItem.save();
     res.status(201).json(newTextItem);
@@ -28,13 +29,14 @@ exports.getAllTextItems = async (req, res) => {
 
 exports.updateTextItem = async (req, res) => {
   const { id } = req.params;
-  const { title, desc, note } = req.body;
+  const { title, desc, note, footer } = req.body;
 
   try {
     const textItem = await TextItem.findByIdAndUpdate(id, {
       title,
       desc,
       note,
+      footer
     });
     if (!textItem) {
       return res.status(404).json({ error: 'Text item not found' });
