@@ -1,11 +1,12 @@
 const nodemailer = require('nodemailer');
 const Reservation = require('../models/reservation');
+const Notification = require('./notfication');
 const dotenv = require('dotenv')
 dotenv.config()
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'TaxiTerrebonne.ca@gmail.com',
+    user: process.env.email,
     pass: process.env.key,
   },
 });
@@ -23,15 +24,18 @@ exports.createReservation = async (req, res) => {
       !newReservationData.phoneNumber ||
       !newReservationData.vehicleType
     ) {
-      return res.status(400).json({ error: 'Please fill all the required fields' });
+      return res.status(400).json({ error: 'Veuillez remplir tous les champs obligatoires.' });
     }
 
     const newReservation = new Reservation(newReservationData);
     await newReservation.save();
+    // Create a notification for the new reservation
+    const notificationMessage = `${newReservation.name} made a reservation.`;
+    await Notification.createNotification(notificationMessage, 'Resrvation', 'reservations');
 
-    // Send email notification
+
     const mailOptions = {
-      from: 'TaxiTerrebonne.ca@gmail.com',
+      from: process.env.email,
       to: newReservation.email,
       subject: 'Taxi Terrebonne Reservation',
       html: `
@@ -75,12 +79,12 @@ exports.createReservation = async (req, res) => {
   }
 };
 
+
 exports.getReservations = async (req, res) => {
   try {
     const currentTime = new Date();
     const reservations = await Reservation.find();
 
-    // Filter reservations based on whether their dateTime has expired or not
     const activeReservations = reservations.filter((reservation) => {
       const reservationTime = new Date(reservation.dateTime);
       return reservationTime > currentTime;
@@ -99,7 +103,6 @@ exports.getExpiredReservations = async (req, res) => {
     const currentTime = new Date();
     const reservations = await Reservation.find();
 
-    // Filter reservations based on whether their dateTime has expired or not
     const expiredReservations = reservations.filter((reservation) => {
       const reservationTime = new Date(reservation.dateTime);
       return reservationTime <= currentTime;
@@ -108,5 +111,14 @@ exports.getExpiredReservations = async (req, res) => {
     res.status(200).json(expiredReservations);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching expired reservations' });
+  }
+};
+
+exports.getAllReservations = async (req, res) => {
+  try {
+    const reservations = await Reservation.find();
+    res.status(200).json(reservations);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching all reservations' });
   }
 };

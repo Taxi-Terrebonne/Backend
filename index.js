@@ -11,6 +11,8 @@ const informations = require('./routes/informations');
 const services = require('./routes/services');
 const payment = require('./routes/payment');
 const contact = require('./routes/contact');
+const notificationRoutes = require('./routes/notfication');
+
 const cors = require('cors');
 const path = require('path');
 mongoose.set("strictQuery", true);
@@ -30,6 +32,7 @@ app.use('/informations', informations);
 app.use('/services', services);
 app.use('/payment', payment);
 app.use('/contact', contact);
+app.use('/notifications', notificationRoutes);
 
 const conn = mongoose.connection;
 

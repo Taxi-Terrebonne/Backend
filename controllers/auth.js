@@ -65,7 +65,7 @@ const login_auth = asyncHandler(async (req, res) => {
 
   if (!admin) {
     res.status(401).json({ message: "Wrong email or password" });
-    return; // Return to avoid further execution
+    return;
   }
 
   if (admin && (await bcrypt.compare(password, admin.password))) {
@@ -82,7 +82,6 @@ const login_auth = asyncHandler(async (req, res) => {
 });
 
 
-// Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',

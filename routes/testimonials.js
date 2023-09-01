@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const testimonialsController = require('../controllers/testimonials');
+const { protect } = require('../middleware/auth');
 
 router.get('/', testimonialsController.getAllTestimonials);
-router.post('/', testimonialsController.createTestimonial);
-router.put('/:id', testimonialsController.editTestimonial);
-router.delete('/:id', testimonialsController.deleteTestimonial);
+router.post('/', protect, testimonialsController.createTestimonial);
+router.put('/:id', protect, testimonialsController.editTestimonial);
+router.delete('/:id', protect, testimonialsController.deleteTestimonial);
 
 module.exports = router;

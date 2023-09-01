@@ -2,12 +2,13 @@
 const nodemailer = require('nodemailer');
 const Contact = require('../models/contact');
 const dotenv = require('dotenv')
+const Notification = require('./notfication');
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'TaxiTerrebonne.ca@gmail.com',
+    user: process.env.email,
     pass: process.env.key,
   },
 });
@@ -15,15 +16,17 @@ const sendContactEmail = async (req, res) => {
   const { name, phoneNumber, email, note } = req.body;
 
   if (!name || !phoneNumber || !email || !note) {
-    return res.status(400).json({ error: 'Please fill all the required fields' });
+    return res.status(400).json({ error: 'Veuillez remplir tous les champs obligatoires.' });
   }
 
   try {
     const newContact = await Contact.create({ name, phoneNumber, email, note });
+    const notificationMessage = `New message from ${name}.`;
+    await Notification.createNotification(notificationMessage, 'Contact Us.', 'ContactUs');
 
     const mailOptions = {
-      from: 'TaxiTerrebonne.ca@gmail.com',
-      to: 'TaxiTerrebonne.ca@gmail.com',
+      from: process.env.email,
+      to: process.env.email,
       subject: `New Contact Form from ${email}`,
       html: `
         <p>Name: ${name}</p>
@@ -45,7 +48,7 @@ const sendContactEmail = async (req, res) => {
 
 const getContactSubmissions = async (req, res) => {
   try {
-    const contactSubmissions = await Contact.find(); // Assuming you're using Mongoose or a similar library
+    const contactSubmissions = await Contact.find();
     res.status(200).json(contactSubmissions);
   } catch (error) {
     console.error(error);
