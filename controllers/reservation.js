@@ -39,12 +39,12 @@ exports.createReservation = async (req, res) => {
       to: newReservation.email,
       subject: 'Taxi Terrebonne Reservation',
       html: `
-        <p>Dear ${newReservation.name},</p>
+      <p>Cher ${newReservation.name},</p>
     
-        <p>We're delighted to confirm your reservation with <strong>Taxi Terrebonne</strong>. Here are the details:</p>
-        <p><strong>Phone Number:</strong> ${newReservation.phoneNumber}.</p>
-
-        <p><strong>Date and Time:</strong> ${new Date(newReservation.dateTime).toLocaleString('en-US', {
+      <p>Nous sommes ravis de confirmer votre réservation avec <strong>Taxi Terrebonne</strong>. Voici les détails :</p>
+      <p><strong>Numéro de téléphone :</strong> ${newReservation.phoneNumber}.</p>
+      
+      <p><strong>Date et heure :</strong> ${new Date(newReservation.dateTime).toLocaleString('fr-FR', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
@@ -52,15 +52,15 @@ exports.createReservation = async (req, res) => {
         minute: 'numeric',
         hour12: true,
       })}.</p>
-       <p><strong>Departure Address:</strong> ${newReservation.departureAddress}.</p>
-        <p><strong>Arrival Address:</strong> ${newReservation.arrivalAddress}.</p>
-        <p><strong>Vehicle Type:</strong> ${newReservation.vehicleType}.</p>
-    
-        <p>Thank you for choosing us. If you have any questions or need assistance, feel free to <a href="tel:+14505163131">call us</a> at +1 (450) 516-3131.</p>
-    
-        <p>We look forward to serving you and hope to welcome you back soon.</p>
-    
-        <p>Best regards,<br><strong>Taxi Terrebonne</strong</p>
+      <p><strong>Adresse de départ :</strong> ${newReservation.departureAddress}.</p>
+      <p><strong>Adresse d'arrivée :</strong> ${newReservation.arrivalAddress}.</p>
+      <p><strong>Type de véhicule :</strong> ${newReservation.vehicleType}.</p>
+      
+      <p>Merci de nous avoir choisis. Si vous avez des questions ou avez besoin d'aide, n'hésitez pas à <a href="tel:+14505163131">nous appeler</a> au +1 (450) 516-3131.</p>
+      
+      <p>Nous avons hâte de vous servir et espérons vous accueillir à nouveau bientôt.</p>
+      
+      <p>Cordialement,<br><strong>Taxi Terrebonne</strong></p>      
       `,
     };
 
