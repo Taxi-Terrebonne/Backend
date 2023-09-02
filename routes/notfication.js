@@ -17,7 +17,6 @@ router.get('/', async (req, res) => {
 
 router.post('/delete-all', async (req, res) => {
   try {
-    // Send a request to your backend to delete all notifications from the database
     await notificationController.deleteAllNotifications();
 
     res.status(200).json({ message: 'All notifications deleted successfully' });

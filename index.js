@@ -12,7 +12,7 @@ const services = require('./routes/services');
 const payment = require('./routes/payment');
 const contact = require('./routes/contact');
 const notificationRoutes = require('./routes/notfication');
-
+const Hero = require('./routes/hero');
 const cors = require('cors');
 const path = require('path');
 mongoose.set("strictQuery", true);
@@ -33,7 +33,7 @@ app.use('/services', services);
 app.use('/payment', payment);
 app.use('/contact', contact);
 app.use('/notifications', notificationRoutes);
-
+app.use('/hero', Hero)
 const conn = mongoose.connection;
 
 const port = process.env.PORT || 8080;
