@@ -3,7 +3,7 @@ const router = express.Router();
 const Hero = require('../controllers/hero');
 const { protect } = require('../middleware/auth');
 
-router.post('/', Hero.createTextItem);
+router.post('/', protect, Hero.createTextItem);
 
 router.get('/', Hero.getAllTextItems);
 

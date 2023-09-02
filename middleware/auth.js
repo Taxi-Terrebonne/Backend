@@ -21,14 +21,14 @@ const protect = asyncHandler(async (req, res, next) => {
       next()
     } catch (error) {
       console.log(error)
-      res.status(401)
-      throw new Error('Not authorized')
+      res.status(401).json({ message: 'Invalid credentials returned from server ' });
+
     }
   }
 
   if (!token) {
-    res.status(401)
-    return res.status(401).json({ error: 'Not authorized, no token' });
+    res.status(401).json({ message: "Token is required" });
+
   }
 })
 
