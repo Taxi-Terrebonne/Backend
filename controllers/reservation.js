@@ -79,6 +79,15 @@ exports.createReservation = async (req, res) => {
   }
 };
 
+exports.getAllReservations = async (req, res) => {
+  try {
+    const reservations = await Reservation.find();
+    res.status(200).json(reservations);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching all reservations' });
+  }
+};
+
 
 exports.getReservations = async (req, res) => {
   try {
@@ -114,11 +123,4 @@ exports.getExpiredReservations = async (req, res) => {
   }
 };
 
-exports.getAllReservations = async (req, res) => {
-  try {
-    const reservations = await Reservation.find();
-    res.status(200).json(reservations);
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching all reservations' });
-  }
-};
+

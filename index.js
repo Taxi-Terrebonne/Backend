@@ -13,6 +13,8 @@ const payment = require('./routes/payment');
 const contact = require('./routes/contact');
 const notificationRoutes = require('./routes/notfication');
 const Hero = require('./routes/hero');
+const placesRoute = require('./routes/places');
+
 const cors = require('cors');
 const path = require('path');
 mongoose.set("strictQuery", true);
@@ -34,6 +36,8 @@ app.use('/payment', payment);
 app.use('/contact', contact);
 app.use('/notifications', notificationRoutes);
 app.use('/hero', Hero)
+app.use('/places', placesRoute)
+
 const conn = mongoose.connection;
 
 const port = process.env.PORT || 8080;
