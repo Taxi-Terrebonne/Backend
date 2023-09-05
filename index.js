@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const connection = require("./config/db");
 const express = require("express");
 const app = express();
-const Auth = require("./routes/auth")
+const Auth = require("./routes/auth");
 const reservationsRouter = require('./routes/reservation');
 const vehicleTypeRoutes = require('./routes/vehicle');
 const testimonialsRoutes = require('./routes/testimonials');
@@ -36,9 +36,18 @@ app.use('/payment', payment);
 app.use('/contact', contact);
 app.use('/notifications', notificationRoutes);
 app.use('/hero', Hero)
-app.use('/places', placesRoute)
-
-const conn = mongoose.connection;
+app.use('/places', placesRoute);
 
 const port = process.env.PORT || 8080;
-app.listen(port, console.log(`Listening on port ${port}...`));
+
+const server = require('http').createServer(app); 
+
+const { setupSocket } = require('./middleware/socket'); 
+
+const io = setupSocket(server); 
+
+server.listen(port, () => {
+  console.log(`Listening on port ${port}...`);
+});
+
+module.exports = io;

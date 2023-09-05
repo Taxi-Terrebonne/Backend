@@ -1,14 +1,18 @@
-// controllers/notificationController.js
 const Notification = require('../models/notfication');
-
+const { getIO } = require('../middleware/socket');
 exports.createNotification = async (action, context, path) => {
   try {
     const newNotification = new Notification({
       action,
       context,
-      path
+      path,
     });
     await newNotification.save();
+
+    const io = getIO();
+
+    io.emit('newNotification', newNotification);
+
   } catch (error) {
     console.error('Error creating notification:', error);
   }

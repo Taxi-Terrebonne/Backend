@@ -1,9 +1,8 @@
-// controllers/contactController.js
 const nodemailer = require('nodemailer');
 const Contact = require('../models/contact');
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 const Notification = require('./notfication');
-dotenv.config()
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -12,6 +11,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.key,
   },
 });
+
 const sendContactEmail = async (req, res) => {
   const { name, phoneNumber, email, note } = req.body;
 
@@ -45,7 +45,6 @@ const sendContactEmail = async (req, res) => {
   }
 };
 
-
 const getContactSubmissions = async (req, res) => {
   try {
     const contactSubmissions = await Contact.find();
@@ -56,4 +55,30 @@ const getContactSubmissions = async (req, res) => {
   }
 };
 
-module.exports = { sendContactEmail, getContactSubmissions };
+const clearAllContactSubmissions = async (req, res) => {
+  try {
+    await Contact.deleteMany({}); // Delete all contact submissions
+    res.status(200).json({ message: 'All contact submissions cleared successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while clearing all contact submissions' });
+  }
+};
+
+const deleteContactSubmissionById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedContact = await Contact.findByIdAndDelete(id); // Find and delete the contact by its ID
+    if (!deletedContact) {
+      return res.status(404).json({ error: 'Contact submission not found' });
+    }
+
+    res.status(200).json({ message: 'Contact submission deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while deleting the contact submission' });
+  }
+};
+
+module.exports = { sendContactEmail, getContactSubmissions, clearAllContactSubmissions, deleteContactSubmissionById };

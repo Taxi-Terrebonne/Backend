@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const Reservation = require('../models/reservation');
 const Notification = require('./notfication');
+
 const dotenv = require('dotenv')
 dotenv.config()
 const transporter = nodemailer.createTransport({
@@ -29,7 +30,7 @@ exports.createReservation = async (req, res) => {
 
     const newReservation = new Reservation(newReservationData);
     await newReservation.save();
-    // Create a notification for the new reservation
+
     const notificationMessage = `${newReservation.name} made a reservation.`;
     await Notification.createNotification(notificationMessage, 'Resrvation', 'reservations');
 
