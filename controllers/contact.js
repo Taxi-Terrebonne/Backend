@@ -25,7 +25,7 @@ const sendContactEmail = async (req, res) => {
     await Notification.createNotification(notificationMessage, 'Contact Us.', 'ContactUs');
 
     const mailOptions = {
-      from: `New Contact Form from ${email}`,
+      from: `${email}`,
       to: process.env.email,
       subject: `New Contact Form from ${email}`,
       html: `
