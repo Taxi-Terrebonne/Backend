@@ -37,7 +37,7 @@ exports.createReservation = async (req, res) => {
 
     const mailOptions = {
       from: process.env.email,
-      to: [process.env.email, newReservation.email],
+      to: newReservation.email,
       subject: 'Taxi Terrebonne Reservation',
       html: `
       <p>Cher ${newReservation.name},</p>
